@@ -1,5 +1,11 @@
 # serverless-experiment
 
+## requirements
+- [Node(12.x)](https://nodejs.org)
+- Serverless Framework CLI
+    - `npm install -g serverless`
+- [AWS Credencials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials)
+
 ## install
 
 ```sh
@@ -51,3 +57,6 @@ yarn run sls dynamodb remove
 # remove help
 sls remove --help
 ```
+
+## Refference
+https://kcf-developers.hatenablog.jp/entry/2018/10/11/114516
