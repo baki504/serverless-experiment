@@ -1,0 +1,30 @@
+{
+  "name": "serverless-experiment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.59",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/express": "^4.17.7",
+    "@types/node": "^14.0.26",
+    "@types/webpack": "^4.41.21",
+    "aws-lambda": "^1.0.6",
+    "aws-serverless-express": "^3.3.8",
+    "path": "^0.12.7",
+    "serverless": "^1.76.1",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^6.5.0",
+    "serverless-webpack": "^5.3.3",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.0",
+    "webpack-node-externals": "^2.5.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.720.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "serverless-http": "^2.5.0"
+  }
+}

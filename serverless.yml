@@ -1,0 +1,82 @@
+service: serverless-experiment
+# プラグインの設定
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dynamodb-local
+# AWS側の設定
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: ap-northeast-1
+  environment:
+    DYNAMODB_TABLE: items
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+package:
+  excludeDevDependencies: true
+  exclude:
+    - serverless-http
+
+custom:
+  # webpackの設定
+  webpackIncludeModules: true
+  webpack:
+    webpackConfig: "webpack.config.js"
+    packager: "yarn"
+    packagerOptions: {}
+  # Dyamodbをローカルで起動させるための設定
+  dynamodb:
+    start:
+      port: 3030
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      development:
+        sources:
+          - table: items
+            sources: [./dynamo/items.json]
+    stages:
+      - ${self:provider.stage}
+
+resources:
+  Resources:
+    # サンプルで作成するDynamodbのテーブル
+    ArticlesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: items
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+# lambdaの設定
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          method: ANY
+          path: "/"
+          cors: true
+      - http:
+          method: ANY
+          path: "{proxy+}"
+          cors: true
